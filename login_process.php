@@ -53,28 +53,29 @@ if($error==0){
   if ($numberOfRows === 1) { 
 
       $get_user = $checkUser->fetch(PDO::FETCH_ASSOC); 
-       $database_password = $get_user['password'];
+       $database_password = $get_user['password']; 
 
 
        if (password_verify($pass, $database_password)) { 
           $_SESSION['userName']=$get_user['user_name'];
-          $_SESSION['userId']=$get_user['user_id'];
+          $_SESSION['userId']=$get_user['user_id'];     
          
 
-          
-          if($userName==='SondosSayed015' || $userName==='SondosGaber'){
+
+          if($get_user['role']==='admin'){
             setcookie('user_role', 'admin', time() + (86400 * 30), '/');
             setcookie('admin_name', $userName, time() + (86400 * 30), '/');
             header('location: admin.php'); 
             exit();
-
           }else{
             setcookie('user_role', 'user', time() + (86400 * 30), '/');
             header('location: home.php'); 
           exit();
           }
+         
+
           
-          }else {
+        }else {
             $checkError= "<p class='error'>wrong user name or password </p>";
             include('login.php');
             exit();
